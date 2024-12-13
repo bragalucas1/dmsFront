@@ -1,2 +1,0 @@
-# dmsFront
-dmsContestFront
