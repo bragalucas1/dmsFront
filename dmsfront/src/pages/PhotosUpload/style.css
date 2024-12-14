@@ -1,0 +1,24 @@
+/* Fundo da animação com área reduzida */
+.success-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px; /* Tamanho reduzido do fundo verde */
+  height: 120px;
+  background-color: rgba(0, 128, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  border-radius: 8px; /* Arredondar os cantos */
+  animation: fadeInOut 2s ease-in-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombreamento suave */
+}
+
+/* Ícone de sucesso centralizado */
+.success-icon {
+  font-size: 2rem; /* Tamanho reduzido do ícone */
+  color: white;
+  font-weight: bold;
+}

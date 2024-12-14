@@ -1,31 +1,25 @@
-import { fetchUsers, fetchAlbumPhotos, fetchUserAlbums } from '../../services/UserService/UserService';
+import { User } from "@/interfaces/User";
+import axios from "axios";
 
-export const getUsers = async () => {
-  try {
-    const users = await fetchUsers();
-    return users;
-  } catch (error) {
-    console.error('Error fetching users:', error);
-    throw error;
-  }
+const API_URL = "http://localhost:3001/api";
+
+export const fetchUsers = async (): Promise<User[]> => {
+  const response = await axios.get<User[]>(`${API_URL}/users`);
+  return response.data;
 };
 
-export const getUserAlbums = async (userId: string) => {
-  try {
-    const albums = await fetchUserAlbums(userId);
-    return albums;
-  } catch (error) {
-    console.error('Error fetching user albums:', error);
-    throw error;
-  }
+export const fetchUserAlbums = async (userId: string) => {
+  const response = await axios.get(`${API_URL}/users/${userId}/albums`);
+  return response.data;
 };
 
-export const getAlbumPhotos = async (albumId: string) => {
-  try {
-    const photos = await fetchAlbumPhotos(albumId);
-    return photos;
-  } catch (error) {
-    console.error('Error fetching album photos:', error);
-    throw error;
-  }
+export const fetchAlbumPhotos = async (albumId: string) => {
+  const response = await axios.get(`${API_URL}/albums/${albumId}/photos`);
+  return response.data;
 };
+
+export const createUser = async () => {
+  const response = await axios.post(`${API_URL}/users`);
+  return response.data;
+};
+

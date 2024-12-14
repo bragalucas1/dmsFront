@@ -3,13 +3,12 @@
 import { Photo } from "@/interfaces/Photo";
 import { photoRepository } from "repositories/PhotosRepository.jsx/PhotosRepository";
 
-
 export const photoService = {
   createPhoto: async (formData: FormData) => {
     try {
       return await photoRepository.create(formData);
     } catch (error) {
-      console.error('Error in photo service - create:', error);
+      console.error("Error in photo service - create:", error);
       throw error;
     }
   },
@@ -18,7 +17,7 @@ export const photoService = {
     try {
       return await photoRepository.update(id, data);
     } catch (error) {
-      console.error('Error in photo service - update:', error);
+      console.error("Error in photo service - update:", error);
       throw error;
     }
   },
@@ -27,24 +26,25 @@ export const photoService = {
     try {
       await photoRepository.delete(id);
     } catch (error) {
-      console.error('Error in photo service - delete:', error);
+      console.error("Error in photo service - delete:", error);
       throw error;
     }
   },
 
-  getPhoto: async (id: number) => {
+  getPhotos: async (id: number): Promise<Photo[]> => {
     try {
       return await photoRepository.getById(id);
     } catch (error) {
-      console.error('Error in photo service - get:', error);
+      console.error("Error in photo service - get:", error);
       throw error;
     }
   },
+
   getCurrentUserAlbums: async () => {
     try {
       return await photoRepository.getCurrentUserAlbums();
     } catch (error) {
-      console.error('Error in photo service - getCurrentUserAlbums:', error);
+      console.error("Error in photo service - getCurrentUserAlbums:", error);
       throw error;
     }
   },

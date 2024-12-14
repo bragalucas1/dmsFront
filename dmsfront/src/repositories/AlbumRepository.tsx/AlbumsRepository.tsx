@@ -1,62 +1,32 @@
 import { Album } from "@/interfaces/Album";
 
+const API_BASE_URL = "http://localhost:3001/api";
+
 export const albumRepository = {
-  create: async (albumData: Partial<Album>): Promise<Album> => {
+  getById: async (id: number): Promise<Album[]> => {
     try {
-      const response = await fetch('http://localhost:5000/api/albums', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(albumData),
-      });
+      const response = await fetch(`${API_BASE_URL}/albums/${id}/photos`);
       return response.json();
     } catch (error) {
-      throw new Error('Failed to create album');
+      throw new Error("Failed to fetch album");
     }
   },
 
-  update: async (id: number, albumData: Partial<Album>): Promise<Album> => {
+  getUsersAlbumsByUserId: async (userId: number): Promise<Album[]> => {
     try {
-      const response = await fetch(`http://localhost:5000/api/albums/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(albumData),
-      });
+      const response = await fetch(`${API_BASE_URL}/albums/users/${userId}`);
       return response.json();
     } catch (error) {
-      throw new Error('Failed to update album');
-    }
-  },
-
-  delete: async (id: number): Promise<void> => {
-    try {
-      await fetch(`http://localhost:5000/api/albums/${id}`, {
-        method: 'DELETE',
-      });
-    } catch (error) {
-      throw new Error('Failed to delete album');
-    }
-  },
-
-  getById: async (id: number): Promise<Album> => {
-    try {
-      const response = await fetch(`http://localhost:5000/api/albums/${id}`);
-      return response.json();
-    } catch (error) {
-      throw new Error('Failed to fetch album');
+      throw new Error("Failed to fetch user albums");
     }
   },
 
   getAll: async (): Promise<Album[]> => {
     try {
-      const response = await fetch('http://localhost:5000/api/albums');
+      const response = await fetch(`${API_BASE_URL}/albums`);
       return response.json();
     } catch (error) {
-      throw new Error('Failed to fetch albums');
+      throw new Error("Failed to fetch albums");
     }
   },
 };
-

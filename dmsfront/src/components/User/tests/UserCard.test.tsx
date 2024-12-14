@@ -5,7 +5,7 @@ import UserCard from '../UserCard';
 describe('UserCard', () => {
   const mockUser = {
     id: 1,
-    userName: 'John Doe',
+    name: 'John Doe',
     email: 'john@example.com',
   };
 

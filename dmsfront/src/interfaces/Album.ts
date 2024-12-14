@@ -1,6 +1,9 @@
+import { Photo } from "./Photo";
+
 export interface Album {
-    id: number;
-    userId: number;
-    title: string;
+  id: number;
+  title: string;
+  userId: number;
+  albumId?: number;
+  photos: Photo[];
 }
-  

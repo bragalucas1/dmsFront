@@ -1,33 +1,38 @@
-// src/pages/PhotosUpload/index.tsx
-import React, { useState, useEffect } from 'react';
-import { photoService } from 'services/PhotosService/PhotosService';
-import { mockPhotoService } from 'services/PhotosService/mockPhotoService';
-
-interface Album {
-  id: number;
-  title: string;
-  userId: number;
-}
+import { Album } from "@/interfaces/Album";
+import { Photo } from "@/interfaces/Photo";
+import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PhotoUpload: React.FC = () => {
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [albums, setAlbums] = useState<Album[]>([]);
-  const [selectedAlbum, setSelectedAlbum] = useState<string>('');
-  const [newAlbumTitle, setNewAlbumTitle] = useState('');
+  const [selectedAlbum, setSelectedAlbum] = useState<string>("");
+  const [newAlbumTitle, setNewAlbumTitle] = useState("");
   const [isCreatingNewAlbum, setIsCreatingNewAlbum] = useState(false);
 
-  useEffect(() => {
-    const fetchAlbums = async () => {
-      try {
-        const userAlbums = await photoService.getCurrentUserAlbums();
-        setAlbums(userAlbums);
-      } catch (error) {
-        console.error('Failed to fetch albums:', error);
-      }
+  const generatePlaceholderUrl = () => {
+    const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+    return {
+      url: `https://via.placeholder.com/600/${randomColor}`,
+      thumbnailUrl: `https://via.placeholder.com/150/${randomColor}`,
     };
+  };
 
+  const fetchAlbums = () => {
+    const storedUsers = localStorage.getItem("users");
+    if (storedUsers) {
+      const users = JSON.parse(storedUsers);
+      const owner = users.find((user: any) => user.isOwner);
+      if (owner && owner.albums) {
+        setAlbums(owner.albums);
+      }
+    }
+  };
+
+  useEffect(() => {
     fetchAlbums();
   }, []);
 
@@ -37,24 +42,58 @@ const PhotoUpload: React.FC = () => {
 
     setIsLoading(true);
     const formData = new FormData();
-    formData.append('title', title);
-    formData.append('photo', file);
-    
-    if (isCreatingNewAlbum) {
-      formData.append('albumTitle', newAlbumTitle);
-    } else {
-      formData.append('albumId', selectedAlbum);
-    }
+    formData.append("title", title);
+    formData.append("photo", file);
 
     try {
-      await photoService.createPhoto(formData);
-      setTitle('');
+      const storedUsers = localStorage.getItem("users");
+      if (!storedUsers) throw new Error("No users found in localStorage");
+
+      const users = JSON.parse(storedUsers);
+      const owner = users.find((user: any) => user.isOwner);
+      if (!owner) throw new Error("Owner not found");
+
+      let albumId = selectedAlbum;
+
+      if (isCreatingNewAlbum) {
+        albumId = (albums.length + 1).toString();
+        const newAlbum: Album = {
+          id: parseInt(albumId),
+          title: newAlbumTitle,
+          userId: owner.id,
+          photos: [],
+        };
+
+        owner.albums = owner.albums ? [...owner.albums, newAlbum] : [newAlbum];
+        setAlbums([...albums, newAlbum]);
+      }
+
+      const { url, thumbnailUrl } = generatePlaceholderUrl();
+
+      const newPhoto: Photo = {
+        albumId: parseInt(albumId),
+        id: Date.now(),
+        title,
+        url,
+        thumbnailUrl,
+      };
+
+      const albumIndex = owner.albums.findIndex(
+        (album: Album) => album.id === parseInt(albumId)
+      );
+      owner.albums[albumIndex].photos.push(newPhoto);
+      localStorage.setItem("users", JSON.stringify(users));
+
+      toast.success("Photo uploaded successfully!");
+
+      setTitle("");
       setFile(null);
-      setSelectedAlbum('');
-      setNewAlbumTitle('');
+      setSelectedAlbum("");
+      setNewAlbumTitle("");
       setIsCreatingNewAlbum(false);
     } catch (error) {
-      console.error('Upload failed:', error);
+      console.error("Upload failed:", error);
+      toast.error("Failed to upload photo.");
     } finally {
       setIsLoading(false);
     }
@@ -63,6 +102,7 @@ const PhotoUpload: React.FC = () => {
   return (
     <div className="upload-container">
       <h1>Upload New Photo</h1>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       <form onSubmit={handleSubmit} className="upload-form">
         <div className="form-group">
           <label htmlFor="photo-title">Photo Title:</label>
@@ -132,17 +172,17 @@ const PhotoUpload: React.FC = () => {
           </div>
         )}
 
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           className="upload-button"
           disabled={
-            isLoading || 
-            !title.trim() || 
-            !file || 
+            isLoading ||
+            !title.trim() ||
+            !file ||
             (isCreatingNewAlbum ? !newAlbumTitle.trim() : !selectedAlbum)
           }
         >
-          {isLoading ? 'Uploading...' : 'Upload Photo'}
+          {isLoading ? "Uploading..." : "Upload Photo"}
         </button>
       </form>
     </div>
