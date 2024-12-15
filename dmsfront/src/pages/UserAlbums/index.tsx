@@ -28,6 +28,7 @@ const UserAlbumsPage: React.FC = () => {
         if (storedUsers) {
           const users = JSON.parse(storedUsers);
           const owner = users.find((user: any) => user.isOwner);
+          console.log(owner);
 
           if (owner && owner.id === Number(userId)) {
             const user = users.find((user: any) => user.id === Number(userId));
@@ -109,6 +110,7 @@ const UserAlbumsPage: React.FC = () => {
     if (storedUsers) {
       const users = JSON.parse(storedUsers);
       const owner = users.find((user: any) => user.isOwner);
+      console.log(owner);
 
       if (owner && owner.id === Number(userId)) {
         const album = owner.albums.find((album: any) => album.id === albumId);

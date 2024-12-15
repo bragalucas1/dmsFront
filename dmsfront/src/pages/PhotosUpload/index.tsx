@@ -3,6 +3,7 @@ import { Photo } from "@/interfaces/Photo";
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./style.css";
 
 const PhotoUpload: React.FC = () => {
   const [title, setTitle] = useState("");
