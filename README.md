@@ -26,7 +26,7 @@ Ensure the following software is installed on your system:
 ### 1. **Clone the Repository**
 
 ```bash
-git clone https://github.com/your-repo/front-end.git
+git clone https://github.com/bragalucas1/dmsFront.git
 cd dmsFront
 ```
 
