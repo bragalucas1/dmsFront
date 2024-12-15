@@ -1,6 +1,6 @@
 import { Album } from "@/interfaces/Album";
 
-const API_BASE_URL = "http://localhost:3001/api";
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export const albumRepository = {
   getById: async (id: number): Promise<Album[]> => {
