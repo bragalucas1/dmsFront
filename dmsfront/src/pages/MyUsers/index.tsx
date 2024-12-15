@@ -44,6 +44,8 @@ const UsersPage: React.FC = () => {
     setIsModalOpen(false);
     setNewUser({ id: 0, name: "", email: "" });
     setFormErrors({});
+
+    window.location.reload();
   };
 
   const handleCloseModal = () => {
@@ -71,7 +73,9 @@ const UsersPage: React.FC = () => {
       } catch (error) {
         console.error("Error fetching users:", error);
       } finally {
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1000);
       }
     };
 
@@ -96,7 +100,8 @@ const UsersPage: React.FC = () => {
               "app". He will controll all other users added. The users wich are
               already on the UsersPage when you open for the first time are
               consumed from the api. The users you create, will be storaged in
-              the local storage.
+              the local storage. Also, the menu 'My Albums' only will be
+              avaliable when you add some photo an album.
             </div>
           </div>
         </div>
