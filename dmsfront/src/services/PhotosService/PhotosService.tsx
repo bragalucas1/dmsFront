@@ -1,36 +1,9 @@
 // src/services/PhotoService.ts
 
 import { Photo } from "@/interfaces/Photo";
-import { photoRepository } from "repositories/PhotosRepository.jsx/PhotosRepository";
+import { photoRepository } from "@/repositories/PhotosRepository/PhotosRepository";
 
 export const photoService = {
-  createPhoto: async (formData: FormData) => {
-    try {
-      return await photoRepository.create(formData);
-    } catch (error) {
-      console.error("Error in photo service - create:", error);
-      throw error;
-    }
-  },
-
-  updatePhoto: async (id: number, data: Partial<Photo>) => {
-    try {
-      return await photoRepository.update(id, data);
-    } catch (error) {
-      console.error("Error in photo service - update:", error);
-      throw error;
-    }
-  },
-
-  deletePhoto: async (id: number) => {
-    try {
-      await photoRepository.delete(id);
-    } catch (error) {
-      console.error("Error in photo service - delete:", error);
-      throw error;
-    }
-  },
-
   getPhotos: async (id: number): Promise<Photo[]> => {
     try {
       return await photoRepository.getById(id);

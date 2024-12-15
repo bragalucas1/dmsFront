@@ -197,3 +197,60 @@
 .cancel-button:hover {
   background: #c82333;
 }
+
+.actions-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+}
+
+.actions-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+}
+
+.tooltip-container {
+  position: relative;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  background-color: #333;
+  color: #fff;
+  text-align: left; 
+  white-space: normal; 
+  border-radius: 5px;
+  padding: 5px 10px;
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 110%; 
+  transform: translateY(-50%); 
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 14px;
+  line-height: 1.5;
+  width: 200px;
+}
+
+.tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 50%; 
+  right: 100%;
+  transform: translateY(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent #333 transparent transparent; 
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+

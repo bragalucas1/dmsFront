@@ -1,14 +1,9 @@
-import {
-  fetchAlbumPhotos,
-  fetchUserAlbums,
-  fetchUsers,
-} from "repositories/UserRepository/UserRepository";
-
 import { User } from "@/interfaces/User";
+import { UserRepository } from "repositories/UserRepository/UserRepository";
 
 export const getUsers = async () => {
   try {
-    const users = await fetchUsers();
+    const users = await UserRepository.fetchUsers();
     return users;
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -18,7 +13,7 @@ export const getUsers = async () => {
 
 export const getUserAlbums = async (userId: string) => {
   try {
-    const albums = await fetchUserAlbums(userId);
+    const albums = await UserRepository.fetchUserAlbums(userId);
     return albums;
   } catch (error) {
     console.error("Error fetching user albums:", error);
@@ -28,7 +23,7 @@ export const getUserAlbums = async (userId: string) => {
 
 export const getAlbumPhotos = async (albumId: string) => {
   try {
-    const photos = await fetchAlbumPhotos(albumId);
+    const photos = await UserRepository.fetchAlbumPhotos(albumId);
     return photos;
   } catch (error) {
     console.error("Error fetching album photos:", error);

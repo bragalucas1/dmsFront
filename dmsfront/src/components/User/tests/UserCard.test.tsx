@@ -1,35 +1,53 @@
-import React, { act } from 'react'; // Corrigido para importar de react
-import { render, fireEvent } from '@testing-library/react';
-import UserCard from '../UserCard';
+import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { User } from "@/interfaces/User";
+import UserCard from "../UserCard";
 
-describe('UserCard', () => {
-  const mockUser = {
+describe("UserCard", () => {
+  const mockUser: User = {
     id: 1,
-    name: 'John Doe',
-    email: 'john@example.com',
+    name: "John Doe",
+    email: "john.doe@example.com",
   };
 
-  it('renders user information correctly', () => {
-    const handleClick = jest.fn();
-    const { getByText } = render(
-      <UserCard user={mockUser} onClick={handleClick} />
-    );
+  const mockOnClick = jest.fn();
 
-    expect(getByText('John Doe')).toBeInTheDocument();
-    expect(getByText('john@example.com')).toBeInTheDocument();
+  it("should render user name and email", () => {
+    render(<UserCard user={mockUser} onClick={mockOnClick} />);
+
+    expect(screen.getByText(mockUser.name)).toBeInTheDocument();
+
+    expect(screen.getByText(mockUser.email)).toBeInTheDocument();
   });
 
-  it('calls onClick when clicked', () => {
-    const handleClick = jest.fn();
-    const { container } = render(
-      <UserCard user={mockUser} onClick={handleClick} />
+  it("should call onClick with user ID when clicked", () => {
+    render(<UserCard user={mockUser} onClick={mockOnClick} />);
+
+    fireEvent.click(
+      screen.getByRole("button", { name: `View albums from ${mockUser.name}` })
     );
 
-    // Usando o `act` importado do React
-    act(() => {
-      fireEvent.click(container.firstChild as HTMLElement);
-    });
+    expect(mockOnClick).toHaveBeenCalledWith(mockUser.id);
+  });
 
-    expect(handleClick).toHaveBeenCalledWith(mockUser.id);
+  it("should be accessible with keyboard navigation", () => {
+    render(<UserCard user={mockUser} onClick={mockOnClick} />);
+
+    const card = screen.getByRole("button", {
+      name: `View albums from ${mockUser.name}`,
+    });
+    expect(card).toHaveAttribute("tabIndex", "0");
+
+    fireEvent.keyDown(card, { key: "Enter", code: "Enter" });
+    expect(mockOnClick).toHaveBeenCalledWith(mockUser.id);
+  });
+
+  it("should have correct aria-label for accessibility", () => {
+    render(<UserCard user={mockUser} onClick={mockOnClick} />);
+
+    expect(screen.getByRole("button")).toHaveAttribute(
+      "aria-label",
+      `View albums from ${mockUser.name}`
+    );
   });
 });

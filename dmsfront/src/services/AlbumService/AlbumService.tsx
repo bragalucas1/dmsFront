@@ -1,5 +1,5 @@
 import { Album } from "@/interfaces/Album";
-import { albumRepository } from "repositories/AlbumRepository.tsx/AlbumsRepository";
+import { albumRepository } from "repositories/AlbumRepository/AlbumsRepository";
 
 export const albumService = {
   async getAlbum(userId: number): Promise<Album[]> {

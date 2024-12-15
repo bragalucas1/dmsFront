@@ -82,12 +82,24 @@ const UsersPage: React.FC = () => {
     <div className="page-container">
       <div className="header-container">
         <h1>Users</h1>
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="add-user-button"
-        >
-          Add User
-        </button>
+        <div className="actions-container">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="add-user-button"
+          >
+            Add User
+          </button>
+          <div className="tooltip-container">
+            ❓
+            <div className="tooltip-text">
+              How it works: the first user you add will be the owner of the
+              "app". He will controll all other users added. The users wich are
+              already on the UsersPage when you open for the first time are
+              consumed from the api. The users you create, will be storaged in
+              the local storage.
+            </div>
+          </div>
+        </div>
       </div>
 
       {isLoading ? (
@@ -128,12 +140,14 @@ const UsersPage: React.FC = () => {
               <div className="form-group">
                 <label htmlFor="id">ID:</label>
                 <input
-                  type="number"
+                  type="text"
                   id="id"
-                  value={newUser.id}
+                  value={newUser.id || ""} // O campo começa vazio
+                  placeholder="E.g., 1, 2, 3..."
                   onChange={(e) =>
-                    setNewUser({ ...newUser, id: Number(e.target.value) })
+                    setNewUser({ ...newUser, id: Number(e.target.value) || 0 })
                   }
+                  className="input-id"
                 />
                 {formErrors.id && (
                   <span className="error-message">{formErrors.id}</span>
@@ -148,6 +162,8 @@ const UsersPage: React.FC = () => {
                   onChange={(e) =>
                     setNewUser({ ...newUser, name: e.target.value })
                   }
+                  placeholder="Enter your name"
+                  className="input-name"
                 />
                 {formErrors.name && (
                   <span className="error-message">{formErrors.name}</span>
@@ -162,6 +178,8 @@ const UsersPage: React.FC = () => {
                   onChange={(e) =>
                     setNewUser({ ...newUser, email: e.target.value })
                   }
+                  placeholder="E.g., example@example.com"
+                  className="input-email"
                 />
                 {formErrors.email && (
                   <span className="error-message">{formErrors.email}</span>
