@@ -44,6 +44,15 @@ OR
 yarn install
 ```
 
+### 3. **Environment Variables**
+
+Create a `.env` file in the root directory and configure the necessary environment variables. A `.env.example` file is provided for reference.
+
+Example `.env`:
+
+```env
+# API Configuration
+REACT_APP_API_BASE_URL=http://localhost:3001/api
 
 ## **Running the Application**
 
